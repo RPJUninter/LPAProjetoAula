@@ -7,7 +7,7 @@ import pygame
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from code.Const import MENU_OPTION, EVENT_ENEMY, COLOR_WHITE
+from code.Const import MENU_OPTION, EVENT_ENEMY, C_WHITE, WIN_HEIGHT, C_GREEN, C_CYAN
 from code.Enemy import Enemy
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
@@ -27,6 +27,7 @@ class Level:
             self.entity_list.append(EntityFactory.get_entity('Player2'))
         pygame.time.set_timer(EVENT_ENEMY, 4000)
 
+
     def run(self):
         pygame.mixer_music.load(f'./asset/{self.name}.mp3')
         pygame.mixer_music.set_volume(0.3)
@@ -42,9 +43,16 @@ class Level:
                     shoot = ent.shoot()
                     if shoot is not None:
                         self.entity_list.append(shoot)
+
+                if ent.name == 'Player1':
+                    self.level_text(14, f'Player1 - Health: {ent.health} | Score: {ent.score}', C_GREEN, (10, 25))
+
+                if ent.name == 'Player2':
+                    self.level_text(14, f'Player2 - Health: {ent.health}| Score: {ent.score}', C_CYAN, (10, 45))
+
             # texto a ser printado na tela
-            self.level_text(14, f'fps: {clock.get_fps() :.0f}', COLOR_WHITE, (10, 10))
-            self.level_text(14, f'entidades: {len(self.entity_list)}', COLOR_WHITE, (10, 25))
+            self.level_text(14, f'fps: {clock.get_fps() :.0f}', C_WHITE, (10, WIN_HEIGHT - 35))
+            self.level_text(14, f'entidades: {len(self.entity_list)}', C_WHITE, (10, WIN_HEIGHT - 20))
             # Atualizar tela
             pygame.display.flip()
             # VERIFICAR RELACIONAMENTOS DE ENTIDADES
